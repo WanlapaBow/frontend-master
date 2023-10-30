@@ -1,0 +1,309 @@
+<div class="row">
+  <div class="col-md-12">
+    <nb-card
+      [nbSpinner]="loading"
+      nbSpinnerStatus="primary"
+      nbSpinnerSize="large"
+      nbSpinnerMessage=""
+    >
+      <nb-card-header class="nb-card-font">
+        <div class="row align-items-center">
+          <div class="col-md-4">Create Receipt Detail</div>
+          <div class="col-md-6 offset-md-2">
+            <button
+              nbButton
+              status="basic"
+              size="small"
+              class="float-right"
+              (click)="clearData()"
+            >
+              <nb-icon icon="close-outline"></nb-icon>
+              Clear
+            </button>
+            <button
+              nbButton
+              status="primary"
+              size="small"
+              class="float-right mr-2"
+              [disabled]="form.invalid"
+              (click)="onReceiptCreate()"
+            >
+              <nb-icon icon="save-outline"></nb-icon>
+              Create Receipt
+            </button>
+            <button
+              nbButton
+              status="basic"
+              size="small"
+              class="float-right mr-2"
+              (click)="onBack()"
+            >
+              <nb-icon icon="arrow-back-outline"></nb-icon>
+              Back
+            </button>
+          </div>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <div class="row align-items-center">
+          <div class="col">
+            <nb-card>
+              <nb-card-body class="text-center">
+                <div class="subtitle">Receipt Amount</div>
+                <div class="h3">{{ form.value.receiptAmount }}</div>
+              </nb-card-body>
+            </nb-card>
+          </div>
+          <div class="col">
+            <nb-card>
+              <nb-card-body class="text-center">
+                <div class="subtitle">Applied Amount</div>
+                <div class="h3">{{ tempApplieAmount }}</div>
+              </nb-card-body>
+            </nb-card>
+          </div>
+          <div class="col">
+            <nb-card>
+              <nb-card-body class="text-center">
+                <div class="subtitle">UnApplied Amount</div>
+                <div class="h3">{{ form.value.unappliedAmount }}</div>
+              </nb-card-body>
+            </nb-card>
+          </div>
+          <div class="col">
+            <nb-card>
+              <nb-card-body class="text-center">
+                <div class="subtitle">Remaining Amount</div>
+                <div class="h3">{{ tempRemaining | number: "1.2-2" }}</div>
+              </nb-card-body>
+            </nb-card>
+          </div>
+        </div>
+        <form [formGroup]="form">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row align-items-center">
+                <label class="label text-right col-sm-3 col-md-5 col-form-label"
+                  >Receipt Method<em class="text-danger">*</em></label
+                >
+                <div class="col-sm-7 col-md-7">
+                  <nb-select
+                    fullWidth
+                    placeholder="Select Business Unit"
+                    size="medium"
+                    formControlName="receiptMethodId"
+                  >
+                    <nb-option
+                      [value]="item.code"
+                      *ngFor="let item of commonService.receiptMethodList"
+                      >{{ item.name }}</nb-option
+                    >
+                  </nb-select>
+                </div>
+              </div>
+              <div class="form-group row align-items-center">
+                <label class="label text-right col-sm-3 col-md-5 col-form-label"
+                  >Receipt Number<em class="text-danger">*</em></label
+                >
+                <div class="col-sm-7 col-md-7">
+                  <input
+                    type="text"
+                    nbInput
+                    fullWidth
+                    formControlName="receiptNumber"
+                  />
+                </div>
+              </div>
+              <div class="form-group row align-items-center">
+                <label class="label text-right col-sm-3 col-md-5 col-form-label"
+                  >Receipt Amount<em class="text-danger">*</em></label
+                >
+                <div class="col-sm-7 col-md-7">
+                  <input
+                    type="text"
+                    nbInput
+                    fullWidth
+                    formControlName="receiptAmount"
+                    (change)="isReceiptAmountChange()"
+                  />
+                </div>
+              </div>
+              <div class="form-group row align-items-center">
+                <label class="label text-right col-sm-3 col-md-5 col-form-label"
+                  >Receipt Date<em class="text-danger">*</em></label
+                >
+                <div class="col-sm-7 col-md-7">
+                  <input
+                    nbInput
+                    placeholder="เลือกช่วงเวลา"
+                    [nbDatepicker]="receiptdate"
+                    fullWidth
+                    class="range-picker"
+                    formControlName="receiptDate"
+                  />
+                  <nb-datepicker #receiptdate></nb-datepicker>
+                </div>
+              </div>
+              <div class="form-group row align-items-center">
+                <label class="label text-right col-sm-3 col-md-5 col-form-label"
+                  >Unapplied Amount</label
+                >
+                <div class="col-sm-7 col-md-7">
+                  <input
+                    type="text"
+                    nbInput
+                    fullWidth
+                    formControlName="unappliedAmount"
+                    [status]="
+                      form.value.unappliedAmount < 0 ? 'danger' : 'basic'
+                    "
+                    #unappliedAmt
+                    readonly
+                  />
+                </div>
+              </div>
+              <div class="form-group row align-items-center">
+                <label class="label text-right col-sm-3 col-md-5 col-form-label"
+                  >Accounting Date<em class="text-danger">*</em></label
+                >
+                <div class="col-sm-7 col-md-7">
+                  <input
+                    nbInput
+                    placeholder="เลือกช่วงเวลา"
+                    formControlName="accountingDate"
+                    [nbDatepicker]="accountDate"
+                    fullWidth
+                    class="range-picker"
+                  />
+                  <nb-datepicker #accountDate></nb-datepicker>
+                </div>
+              </div>
+              <div class="form-group row align-items-center">
+                <label class="label text-right col-sm-3 col-md-5 col-form-label"
+                  >Matrit Date</label
+                >
+                <div class="col-sm-7 col-md-7">
+                  <input
+                    nbInput
+                    placeholder="เลือกช่วงเวลา"
+                    formControlName="maturityDate"
+                    [nbDatepicker]="matrit"
+                    fullWidth
+                    class="range-picker"
+                  />
+                  <nb-datepicker #matrit></nb-datepicker>
+                </div>
+              </div>
+              <div class="form-group row align-items-center">
+                <label class="label text-right col-sm-3 col-md-5 col-form-label"
+                  >Deposit Date<em class="text-danger">*</em></label
+                >
+                <div class="col-sm-7 col-md-7">
+                  <input
+                    nbInput
+                    placeholder="เลือกช่วงเวลา"
+                    [nbDatepicker]="deposit"
+                    formControlName="depositDate"
+                    fullWidth
+                    class="range-picker"
+                  />
+                  <nb-datepicker #deposit></nb-datepicker>
+                </div>
+              </div>
+              <div class="form-group row align-items-center">
+                <label class="label text-right col-sm-3 col-md-5 col-form-label"
+                  >Remark</label
+                >
+                <div class="col-sm-7 col-md-7">
+                  <textarea
+                    nbInput
+                    fullWidth
+                    placeholder="Remark"
+                    formControlName="remark"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <hr />
+        <div class="row" *ngIf="currentUnApplieAmount">
+          <div class="col-md-12">
+            <nb-card>
+              <nb-card-body class="text-center">
+                <div class="subtitle">Current Unapplied Amount</div>
+                <div class="h3">{{ currentUnApplieAmount }}</div>
+              </nb-card-body>
+            </nb-card>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 align-items-center">
+            <button
+              nbButton
+              fullWidth
+              status="primary"
+              class="float-right"
+              (click)="openSearchInvoice()"
+            >
+              <nb-icon icon="plus-outline"></nb-icon>
+              Select Other Invoice
+            </button>
+          </div>
+        </div>
+        <ag-grid-angular
+          class="ag-theme-alpine"
+          domLayout="autoHeight"
+          [columnDefs]="columnInvoiceDefs"
+          [defaultColDef]="invDefaultColDef"
+          [rowData]="invoiceData"
+          (paginationChanged)="onPaginationChanged($event)"
+          [pagination]="true"
+          [paginationPageSize]="paginationPageSize"
+          [enableBrowserTooltips]="true"
+          (gridReady)="onGridReadyInvoice($event)"
+          [rowSelection]="rowSelection"
+          (rowSelected)="onInvoiceValueChange($event)"
+          [suppressClickEdit]="true"
+          [suppressRowClickSelection]="true"
+          (cellDoubleClicked)="onCellEditClick($event, null, null, 'top')"
+          (cellEditingStarted)="onCellEditStart($event)"
+          (cellEditingStopped)="onCellEditStop($event)"
+          (cellValueChanged)="onCellValueChange($event)"
+          [enableCellTextSelection]="true"
+          rowSelection="multiple"
+        >
+        </ag-grid-angular>
+
+        <div class="form-group row align-items-center pt-3">
+          <label class="label col-sm-3 col-md-2 col-form-label"></label>
+          <div class="col-sm-6 col-md-3">
+            <button
+              nbButton
+              fullWidth
+              size="small"
+              status="primary"
+              [disabled]="form.invalid"
+              (click)="onReceiptCreate()"
+            >
+              <nb-icon icon="save-outline"></nb-icon>
+              Create Receipt
+            </button>
+          </div>
+          <div class="col-sm-6 col-md-3">
+            <button
+              nbButton
+              fullWidth
+              size="small"
+              status="basic"
+              (click)="clearData()"
+            >
+              <nb-icon icon="close-outline"></nb-icon>
+              Clear
+            </button>
+          </div>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

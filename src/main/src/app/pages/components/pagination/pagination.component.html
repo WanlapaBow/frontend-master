@@ -1,0 +1,36 @@
+<form [formGroup]="formSizePage">
+  <div class="btn-group" role="group" aria-label="Basic example">
+    <button nbButton size="small" class="btn btn-secondary" (click)="onFirst()">
+      <nb-icon icon="arrowhead-left-outline"></nb-icon>
+    </button>
+    <button
+      nbButton
+      size="small"
+      class="btn btn-secondary"
+      (click)="onPrevious()"
+    >
+      <nb-icon icon="arrow-ios-back-outline"></nb-icon>
+      Previous
+    </button>
+    <button nbButton size="small" class="btn btn-secondary">
+      Page {{ currentPage + 1 }} of {{ totalPages }}
+    </button>
+    <button nbButton size="small" class="btn btn-secondary" (click)="onNext()">
+      <nb-icon icon="arrow-ios-forward-outline"></nb-icon>
+      Next
+    </button>
+    <button nbButton size="small" class="btn btn-secondary" (click)="onLast()">
+      <nb-icon icon="arrowhead-right-outline"></nb-icon>
+    </button>
+  </div>
+  <nb-select
+    [placeholder]="'Page size'"
+    [size]="'small'"
+    formControlName="pageSize"
+    (selectedChange)="onPageSizeSelectChanged()"
+  >
+    <nb-option value="{{ item }}" *ngFor="let item of sizeList">{{
+      item
+    }}</nb-option>
+  </nb-select>
+</form>

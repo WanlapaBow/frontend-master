@@ -1,0 +1,167 @@
+<div class="row">
+  <div class="col-md-12">
+    <nb-card>
+      <nb-card-header>{{ xcust.title }}</nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="form" class="text-right">
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Business Unit<em class="text-danger">*</em></label
+            >
+            <div class="col-sm-6 col-md-6">
+              <nb-select
+                fullWidth
+                [placeholder]="'Select Business Unit'"
+                [size]="'medium'"
+                formControlName="businessUnit"
+              >
+                <nb-option
+                  [value]="item.buId"
+                  *ngFor="let item of this.commonService.businessUnitList"
+                  >{{ item.buName }}</nb-option
+                >
+              </nb-select>
+            </div>
+          </div>
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Customer Class<em class="text-danger">*</em></label
+            >
+            <div class="col-sm-6 col-md-6">
+              <nb-select
+                fullWidth
+                [placeholder]="'Customer Class'"
+                [status]="customerClassInvalid ? 'danger' : 'basic'"
+                [size]="'medium'"
+                formControlName="customerClass"
+              >
+                <nb-option
+                  [value]="item.code"
+                  *ngFor="let item of this.commonService.customerClassList"
+                  >{{ item.name }}</nb-option
+                >
+              </nb-select>
+            </div>
+          </div>
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Statement Number</label
+            >
+            <div class="col-sm-3 col-md-3">
+              <input
+                nbInput
+                fullWidth
+                type="text"
+                placeholder="Statement Number From"
+                formControlName="statementNumberFrom"
+                [nbAutocomplete]="autoControlNumberFrom"
+                #searchStatementNumFrom
+              />
+              <nb-autocomplete
+                (selectedChange)="autoChange($event)"
+                #autoControlNumberFrom
+              >
+                <nb-option
+                  *ngFor="let option of statementNumberList$"
+                  [value]="option.name"
+                >
+                  {{ option.name }}
+                </nb-option>
+              </nb-autocomplete>
+            </div>
+            <div class="col-sm-3 col-md-3">
+              <input
+                nbInput
+                fullWidth
+                type="text"
+                placeholder="Statement Number To"
+                formControlName="statementNumberTo"
+                [nbAutocomplete]="autoControlNumberTo"
+                #searchStatementNumTo
+              />
+              <nb-autocomplete
+                (selectedChange)="autoChange($event)"
+                #autoControlNumberTo
+              >
+                <nb-option
+                  *ngFor="let option of statementNumberList$"
+                  [value]="option.name"
+                >
+                  {{ option.name }}
+                </nb-option>
+              </nb-autocomplete>
+            </div>
+          </div>
+          <div class="form-group row align-items-center pt-2">
+            <label class="label col-sm-3 col-md-2 col-form-label"></label>
+            <div class="col-sm-6 col-md-3">
+              <button
+                nbButton
+                fullWidth
+                status="primary"
+                [disabled]="!form.valid"
+                [nbSpinner]="isLoading"
+                nbSpinnerStatus="success"
+                (click)="onSync()"
+              >
+                <nb-icon icon="sync-outline"></nb-icon>
+                Sync
+              </button>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <button
+                nbButton
+                fullWidth
+                status="basic"
+                (click)="getLogHistory()"
+              >
+                <nb-icon icon="list-outline"></nb-icon>
+                Log
+              </button>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+    <nb-card *ngIf="isShowLog">
+      <nb-card-header class="nb-card-font">
+        <div class="row align-items-center">
+          <div class="col-md-2 col-lg-4 col-sm-12">Log</div>
+          <div class="col-md-10 col-lg-8 col-sm-12">
+            <div class="float-right">
+              <ngx-pagination
+                (onPageSizeChanged)="onPageSizeChanged($event)"
+                (onBtFirst)="onBt($event)"
+                (onBtNext)="onBt($event)"
+                (onBtPrevious)="onBt($event)"
+                (onBtLast)="onBt($event)"
+                [pageSize]="paginationPageSize"
+                [totalPages]="totalPages"
+                [isFirstPage]="isFirstPage"
+                [isLastPage]="isLastPage"
+              >
+              </ngx-pagination>
+            </div>
+          </div>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <ag-grid-angular
+          class="ag-theme-alpine"
+          domLayout="autoHeight"
+          [columnDefs]="columnDefs"
+          [defaultColDef]="defaultColDef"
+          [rowData]="rowData"
+          [paginationPageSize]="paginationPageSize"
+          [enableBrowserTooltips]="true"
+          (gridReady)="onGridReady($event)"
+          [animateRows]="true"
+          [sortingOrder]="sortingOrder"
+          [enableCellTextSelection]="true"
+          rowSelection="single"
+        >
+        </ag-grid-angular>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

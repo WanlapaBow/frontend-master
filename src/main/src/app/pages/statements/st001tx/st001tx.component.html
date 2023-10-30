@@ -1,0 +1,332 @@
+<div class="row">
+  <div class="col-lg-12">
+    <nb-card
+      [nbSpinner]="loading"
+      nbSpinnerStatus="primary"
+      nbSpinnerSize="large"
+      nbSpinnerMessage=""
+    >
+      <nb-card-header class="nb-card-font">{{ pageTitle }}</nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="form">
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Business Unit<em class="text-danger">*</em></label
+            >
+            <div class="col-sm-6 col-md-6">
+              <nb-select
+                fullWidth
+                [placeholder]="'Select Business Unit'"
+                [size]="'medium'"
+                formControlName="businessUnit"
+              >
+                <nb-option
+                  [value]="item.buId"
+                  *ngFor="let item of this.commonService.businessUnitList"
+                >
+                  {{ item.buName }}</nb-option
+                >
+              </nb-select>
+            </div>
+          </div>
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Customer Class
+              <em *ngIf="isRequiredField('customerClass')" class="text-danger"
+                >*</em
+              ></label
+            >
+            <div class="col-sm-6 col-md-6">
+              <nb-select
+                fullWidth
+                [placeholder]="'Select Customer Class'"
+                [size]="'medium'"
+                (selectedChange)="onCustomerClassChange()"
+                [status]="customerClassInvalid ? 'danger' : 'basic'"
+                formControlName="customerClass"
+              >
+                <nb-option
+                  [value]="item.code"
+                  *ngFor="let item of this.commonService.customerClassList"
+                  >{{ item.name }}
+                </nb-option>
+              </nb-select>
+            </div>
+          </div>
+          <div *ngIf="isShowSubClass" class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Customer Sub Class <em class="text-danger">*</em></label
+            >
+            <div class="col-sm-6 col-md-6">
+              <nb-select
+                fullWidth
+                [placeholder]="'Select Customer Sub Class'"
+                [size]="'medium'"
+                (selectedChange)="onCustomerSubClassChange()"
+                [status]="customerClassInvalid ? 'danger' : 'basic'"
+                formControlName="customerSubClass"
+              >
+                <nb-option
+                  [value]="item.code"
+                  *ngFor="let item of customerSubClassList"
+                  >{{ item.name }}
+                </nb-option>
+              </nb-select>
+            </div>
+          </div>
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Customer Name
+              <em *ngIf="isRequiredField('customerName')" class="text-danger"
+                >*</em
+              ></label
+            >
+            <div class="col-sm-6 col-md-6">
+              <nb-form-field>
+                <input
+                  fullWidth
+                  type="text"
+                  placeholder="Click to Search Customer Name"
+                  formControlName="customerName"
+                  readonly
+                  nbInput
+                />
+
+                <div nbSuffix class="width-button-search">
+                  <button nbButton ghost (click)="onClearInput()">
+                    <nb-icon icon="close-outline" pack="eva"> </nb-icon>
+                  </button>
+                  <button nbButton class="cus-search-bt" (click)="onSearch()">
+                    <nb-icon icon="search-outline" pack="eva"> </nb-icon>
+                  </button>
+                </div>
+              </nb-form-field>
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Site Number
+              <em *ngIf="isRequiredField('siteNumber')" class="text-danger"
+                >*</em
+              ></label
+            >
+            <div class="col-sm-6 col-md-6">
+              <nb-form-field>
+                <input
+                  fullWidth
+                  type="text"
+                  placeholder="Click to Search Site Number"
+                  formControlName="siteNumber"
+                  readonly
+                  nbInput
+                />
+                <div nbSuffix class="width-button-search">
+                  <button nbButton ghost (click)="onClearInput()">
+                    <nb-icon icon="close-outline" pack="eva"> </nb-icon>
+                  </button>
+                  <button nbButton class="cus-search-bt" (click)="onSearch()">
+                    <nb-icon icon="search-outline" pack="eva"> </nb-icon>
+                  </button>
+                </div>
+              </nb-form-field>
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Payment Calendar
+              <em *ngIf="isRequiredField('paymentCalendar')" class="text-danger"
+                >*</em
+              ></label
+            >
+            <div class="col-sm-6 col-md-6">
+              <nb-select
+                fullWidth
+                [placeholder]="'Select Payment Calendar'"
+                [size]="'medium'"
+                formControlName="paymentCalendar"
+                (selectedChange)="onSelectPaymentCalendar()"
+              >
+                <nb-option
+                  [value]="item.code"
+                  *ngFor="let item of this.commonService.paymentCalendarList"
+                >
+                  {{ item.name }}</nb-option
+                >
+              </nb-select>
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Payment Period
+              <em *ngIf="isRequiredField('paymentPeriod')" class="text-danger"
+                >*</em
+              ></label
+            >
+            <div class="col-sm-6 col-md-6">
+              <nb-select
+                fullWidth
+                [placeholder]="'Select Payment Period'"
+                [size]="'medium'"
+                [disabled]=""
+                formControlName="paymentPeriod"
+                (selectedChange)="onSelectPaymentPeriod()"
+              >
+                <nb-option
+                  [value]="item.code"
+                  *ngFor="let item of paymentPeriodList"
+                  >{{ item.name }}</nb-option
+                >
+              </nb-select>
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Invoice Due Date</label
+            >
+            <div class="col-sm-9 col-md-3">
+              <input
+                fullWidth
+                type="text"
+                nbInput
+                placeholder="From"
+                formControlName="invoiceStartDueDate"
+              />
+            </div>
+            <div class="col-sm-9 col-md-3">
+              <input
+                fullWidth
+                type="text"
+                nbInput
+                placeholder="End"
+                formControlName="invoiceEndDueDate"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Payment Due Date</label
+            >
+            <div class="col-sm-6 col-md-6">
+              <input
+                fullWidth
+                type="text"
+                nbInput
+                placeholder="Payment Due Date"
+                formControlName="paymentDueDate"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Sent Mail?</label
+            >
+            <div class="col-sm-9 col-md-6">
+              <nb-checkbox
+                status="basic"
+                formControlName="sendEmail"
+              ></nb-checkbox>
+            </div>
+          </div>
+          <div class="form-group row align-items-center">
+            <label
+              class="label col-sm-3 col-md-2 col-form-label text-right"
+            ></label>
+            <div class="col-sm-6 col-md-2">
+              <button
+                nbButton
+                fullWidth
+                status="primary"
+                type="submit"
+                [disabled]="form.invalid || loading || checkInhouse"
+                [nbSpinner]="loading"
+                nbSpinnerStatus="info"
+                nbSpinnerSize=""
+                nbSpinnerMessage=""
+                (click)="onSubmit()"
+              >
+                <nb-icon icon="plus-outline"></nb-icon>
+                Create
+              </button>
+            </div>
+            <div class="col-sm-6 col-md-2">
+              <button
+                nbButton
+                fullWidth
+                status="basic"
+                type="submit"
+                [disabled]="isLogLoading"
+                [nbSpinner]="loading"
+                nbSpinnerStatus="info"
+                nbSpinnerSize=""
+                nbSpinnerMessage=""
+                (click)="onLog()"
+              >
+                <nb-icon icon="file-text-outline"></nb-icon>
+                Log
+              </button>
+            </div>
+            <div class="col-sm-6 col-md-2">
+              <button nbButton fullWidth status="basic" (click)="clearData()">
+                <nb-icon icon="close-outline"></nb-icon>
+                Clear
+              </button>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+    <nb-card
+      *ngIf="isShowLog"
+      [nbSpinner]="isLogLoading"
+      nbSpinnerStatus="primary"
+      nbSpinnerSize="large"
+      nbSpinnerMessage=""
+    >
+      <nb-card-header class="nb-card-font">
+        <div class="row align-items-center">
+          <div class="col-md-2 col-lg-4 col-sm-12">Log Statement</div>
+          <div class="col-md-10 col-lg-8 col-sm-12">
+            <div class="float-right">
+              <ngx-pagination
+                (onPageSizeChanged)="onPageSizeChanged($event)"
+                (onBtFirst)="onBt($event)"
+                (onBtNext)="onBt($event)"
+                (onBtPrevious)="onBt($event)"
+                (onBtLast)="onBt($event)"
+                [pageSize]="paginationPageSize"
+                [totalPages]="totalPages"
+                [isFirstPage]="isFirstPage"
+                [isLastPage]="isLastPage"
+              >
+              </ngx-pagination>
+            </div>
+          </div>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <ag-grid-angular
+          class="ag-theme-alpine"
+          domLayout="autoHeight"
+          [columnDefs]="columnLogDefs"
+          [defaultColDef]="defaultColDef"
+          [rowData]="logData"
+          [paginationPageSize]="paginationPageSize"
+          [enableBrowserTooltips]="true"
+          (gridReady)="onGridLogReady($event)"
+          [context]="context"
+          rowSelection="single"
+          [animateRows]="true"
+          [enableCellTextSelection]="true"
+          [sortingOrder]="sortingOrder"
+        >
+        </ag-grid-angular>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

@@ -1,0 +1,266 @@
+<div class="row">
+  <div class="col-lg-12">
+    <nb-card
+      *ngIf="isCreate"
+      nbSpinnerStatus="primary"
+      nbSpinnerSize="large"
+      nbSpinnerMessage=""
+    >
+      <nb-card-header class="nb-card-font">
+        <div class="row align-items-center">
+          <div class="col-md-2 col-lg-2 col-sm-12">Setup Email</div>
+          <div class="col-md-10 col-lg-10 col-sm-12">
+            <div class="float-right">
+              <button
+                nbButton
+                size="small"
+                status="primary"
+                class="mr-2 float-right"
+                nbSpinnerStatus="info"
+                nbSpinnerSize=""
+                nbSpinnerMessage=""
+                nbContextMenuPlacement="bottom"
+                nbContextMenuTag="download-menu"
+                (click)="searchPage()"
+              >
+                Search Page
+                <nb-icon icon="arrow-ios-forward-outline"></nb-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="form">
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Email</label
+            >
+            <div class="col-sm-6 col-md-6">
+              <input
+                fullWidth
+                type="text"
+                nbInput
+                placeholder="Input Email"
+                formControlName="email"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Email Group</label
+            >
+            <div class="col-sm-6 col-md-6">
+              <nb-select
+                fullWidth
+                [placeholder]="'Select Email Group'"
+                [size]="'medium'"
+                formControlName="emailGroup"
+              >
+                <nb-option
+                  [value]="item.code"
+                  *ngFor="let item of emailGroupList"
+                >
+                  {{ item.name }}</nb-option
+                >
+              </nb-select>
+            </div>
+          </div>
+          <div class="form-group row align-items-center">
+            <label
+              class="label col-sm-3 col-md-2 col-form-label text-right"
+            ></label>
+            <div class="col-sm-6 col-md-3">
+              <button
+                nbButton
+                fullWidth
+                status="primary"
+                type="submit"
+                [disabled]="loading || form.invalid"
+                [nbSpinner]="loading"
+                nbSpinnerStatus="info"
+                nbSpinnerSize=""
+                nbSpinnerMessage=""
+                (click)="createEmail()"
+              >
+                <nb-icon icon="plus-outline"></nb-icon>
+                Create
+              </button>
+            </div>
+
+            <div class="col-sm-6 col-md-3">
+              <button nbButton fullWidth status="basic" (click)="clearData()">
+                <nb-icon icon="close-outline"></nb-icon>
+                Clear
+              </button>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+
+    <nb-card
+      *ngIf="isSearch"
+      nbSpinnerStatus="primary"
+      nbSpinnerSize="large"
+      nbSpinnerMessage=""
+    >
+      <nb-card-header class="nb-card-font">
+        <div class="row align-items-center">
+          <div class="col-md-2 col-lg-2 col-sm-12">Search Email</div>
+          <div class="col-md-10 col-lg-10 col-sm-12">
+            <div class="float-right">
+              <button
+                nbButton
+                size="small"
+                status="primary"
+                class="mr-2 float-right"
+                nbSpinnerStatus="info"
+                nbSpinnerSize=""
+                nbSpinnerMessage=""
+                nbContextMenuPlacement="bottom"
+                nbContextMenuTag="download-menu"
+                (click)="createPage()"
+              >
+                Create Page
+                <nb-icon icon="arrow-ios-forward-outline"></nb-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </nb-card-header>
+
+      <nb-card-body>
+        <form [formGroup]="form">
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Email</label
+            >
+            <div class="col-sm-6 col-md-6">
+              <nb-form-field>
+                <input
+                  fullWidth
+                  type="text"
+                  nbInput
+                  placeholder="Input Email"
+                  formControlName="email"
+                />
+                <button nbSuffix nbButton ghost (click)="onClearEmail()">
+                  <nb-icon icon="close-outline" pack="eva"> </nb-icon>
+                </button>
+              </nb-form-field>
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Email Group</label
+            >
+            <div class="col-sm-6 col-md-6">
+              <nb-select
+                fullWidth
+                [placeholder]="'Select Email Group'"
+                [size]="'medium'"
+                formControlName="emailGroup"
+              >
+                <nb-option
+                  [value]="item.code"
+                  *ngFor="let item of emailGroupList"
+                >
+                  {{ item.name }}</nb-option
+                >
+              </nb-select>
+            </div>
+          </div>
+          <div class="form-group row align-items-center">
+            <label
+              class="label col-sm-3 col-md-2 col-form-label text-right"
+            ></label>
+            <div class="col-sm-6 col-md-3">
+              <button
+                nbButton
+                fullWidth
+                status="primary"
+                type="submit"
+                [disabled]="loadingSearch"
+                [nbSpinner]="loadingSearch"
+                nbSpinnerStatus="info"
+                nbSpinnerSize=""
+                nbSpinnerMessage=""
+                (click)="searchEmail()"
+              >
+                <nb-icon icon="search-outline"></nb-icon>
+                Search
+              </button>
+            </div>
+
+            <div class="col-sm-6 col-md-3">
+              <button nbButton fullWidth status="basic" (click)="clearData()">
+                <nb-icon icon="close-outline"></nb-icon>
+                Clear
+              </button>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+
+    <nb-card *ngIf="isSearch && isOnSearch">
+      <nb-card-header class="nb-card-font">
+        <div class="row align-items-center">
+          <div class="col-md-4">Email</div>
+          <div class="col-md-8">
+            <button
+              nbButton
+              status="danger"
+              [disabled]="loading"
+              [nbSpinner]="loading"
+              class="ml-1 float-right"
+              nbSpinnerStatus="info"
+              nbSpinnerSize="medium"
+              nbSpinnerMessage=""
+              (click)="onDelelte()"
+            >
+              delete
+            </button>
+            <button
+              nbButton
+              status="warning"
+              [disabled]="loading"
+              [nbSpinner]="loading"
+              class="ml-1 float-right"
+              nbSpinnerStatus="info"
+              nbSpinnerSize="medium"
+              nbSpinnerMessage=""
+              (click)="onEdit()"
+            >
+              <nb-icon icon="plus-outline"></nb-icon>
+              edit
+            </button>
+          </div>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <ag-grid-angular
+          class="ag-theme-alpine"
+          domLayout="autoHeight"
+          [columnDefs]="columnLogDefs"
+          [defaultColDef]="defaultColDef"
+          [rowData]="rowData"
+          [enableBrowserTooltips]="true"
+          [pagination]="true"
+          [paginationPageSize]="paginationPageSize"
+          (gridReady)="onGridReady($event)"
+          [context]="context"
+          rowSelection="single"
+          (selectionChanged)="onSelection($event)"
+          [animateRows]="true"
+          [enableCellTextSelection]="true"
+          [sortingOrder]="sortingOrder"
+        >
+        </ag-grid-angular>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

@@ -1,0 +1,75 @@
+<div class="row">
+  <div class="col-md-12">
+    <nb-card>
+      <nb-card-header class="nb-card-font"> Please Select </nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="formFilter">
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Business Unit<em class="text-danger">*</em></label
+            >
+            <div class="col-sm-6 col-md-6">
+              <nb-select
+                fullWidth
+                [placeholder]="'Select Business Unit'"
+                [size]="'medium'"
+                formControlName="businessUnit"
+              >
+                <nb-option
+                  [value]="item.buId"
+                  *ngFor="let item of this.commonService.businessUnitList"
+                  >{{ item.buName }}</nb-option
+                >
+              </nb-select>
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Customer Class<em class="text-danger">*</em></label
+            >
+            <div class="col-sm-6 col-md-6">
+              <nb-select
+                fullWidth
+                [placeholder]="'Customer Class'"
+                [size]="'medium'"
+                formControlName="customerClass"
+              >
+                <nb-option
+                  [value]="item.code"
+                  *ngFor="let item of this.commonService.customerClassList"
+                  >{{ item.name }}</nb-option
+                >
+              </nb-select>
+            </div>
+          </div>
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label"></label>
+            <div class="col-sm-6 col-md-3">
+              <button
+                nbButton
+                fullWidth
+                status="primary"
+                [disabled]="formFilter.invalid"
+                [routerLink]="[
+                  '../rc004tx',
+                  this.formFilter.value.businessUnit,
+                  this.formFilter.value.customerClass
+                ]"
+              >
+                <nb-icon icon="plus-outline"></nb-icon>
+                Create Receipt
+              </button>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <button nbButton fullWidth status="basic">
+                <nb-icon icon="close-outline"></nb-icon>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

@@ -1,0 +1,346 @@
+<div class="row">
+  <div class="col-lg-12">
+    <nb-card>
+      <nb-card-header class="nb-card-font">{{ title }} Receipt</nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="form">
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Business Unit<em class="text-danger">*</em></label
+            >
+            <div class="col-sm-6 col-md-6">
+              <nb-select
+                fullWidth
+                [placeholder]="'Select Business Unit'"
+                [size]="'medium'"
+                formControlName="businessUnit"
+              >
+                <nb-option
+                  [value]="item.buId"
+                  *ngFor="let item of this.commonService.businessUnitList"
+                  >{{ item.buName }}</nb-option
+                >
+              </nb-select>
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Customer Class<em class="text-danger">*</em></label
+            >
+            <div class="col-sm-6 col-md-6">
+              <nb-select
+                fullWidth
+                [placeholder]="'Customer Class'"
+                [status]="customerClassInvalid ? 'danger' : 'basic'"
+                [size]="'medium'"
+                (selectedChange)="onChangeCustomerClass()"
+                formControlName="customerClass"
+                (selectedChange)="onCustomerClassChange()"
+              >
+                <nb-option
+                  [value]="item.code"
+                  *ngFor="let item of this.commonService.customerClassList"
+                  >{{ item.name }}</nb-option
+                >
+              </nb-select>
+            </div>
+          </div>
+
+          <div *ngIf="isShowSubClass" class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Customer Sub Class <em class="text-danger">*</em></label
+            >
+            <div class="col-sm-6 col-md-6">
+              <nb-select
+                fullWidth
+                [placeholder]="'Select Customer Sub Class'"
+                [size]="'medium'"
+                (selectedChange)="onCustomerSubClassChange()"
+                [status]="customerClassInvalid ? 'danger' : 'basic'"
+                formControlName="customerSubClass"
+              >
+                <nb-option
+                  [value]="item.code"
+                  *ngFor="let item of customerSubClassList"
+                  >{{ item.name }}
+                </nb-option>
+              </nb-select>
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Customer Name</label
+            >
+            <div class="col-sm-6 col-md-6">
+              <nb-form-field>
+                <input
+                  fullWidth
+                  type="text"
+                  placeholder="Click to Search Customer Name"
+                  formControlName="customerName"
+                  readonly
+                  nbInput
+                />
+                <div nbSuffix class="width-button-search">
+                  <button nbButton ghost (click)="onClearInput()">
+                    <nb-icon icon="close-outline" pack="eva"> </nb-icon>
+                  </button>
+                  <button
+                    nbButton
+                    class="cus-search-bt"
+                    (click)="onSearchCustomer()"
+                  >
+                    <nb-icon icon="search-outline" pack="eva"> </nb-icon>
+                  </button>
+                </div>
+              </nb-form-field>
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Site Number</label
+            >
+            <div class="col-sm-6 col-md-6">
+              <nb-form-field>
+                <input
+                  fullWidth
+                  type="text"
+                  placeholder="Click to Search Site Number"
+                  formControlName="siteNumber"
+                  readonly
+                  nbInput
+                />
+                <div nbSuffix class="width-button-search">
+                  <button nbButton ghost (click)="onClearInput()">
+                    <nb-icon icon="close-outline" pack="eva"> </nb-icon>
+                  </button>
+                  <button
+                    nbButton
+                    class="cus-search-bt"
+                    (click)="onSearchCustomer()"
+                  >
+                    <nb-icon icon="search-outline" pack="eva"> </nb-icon>
+                  </button>
+                </div>
+              </nb-form-field>
+            </div>
+          </div>
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Statement Number</label
+            >
+            <div class="col-sm-6 col-md-6">
+              <nb-form-field>
+                <input
+                  nbInput
+                  fullWidth
+                  type="text"
+                  placeholder="search statement Number"
+                  formControlName="statementNumber"
+                  [nbAutocomplete]="autoControlNumber"
+                  #searchStatementNum
+                />
+                <nb-autocomplete #autoControlNumber>
+                  <nb-option
+                    *ngFor="let option of statementNumberList$"
+                    [value]="option.code"
+                  >
+                    {{ option.name }}
+                  </nb-option>
+                </nb-autocomplete>
+                <button nbSuffix nbButton ghost (click)="onClearStatement()">
+                  <nb-icon icon="close-outline" pack="eva"> </nb-icon>
+                </button>
+              </nb-form-field>
+            </div>
+          </div>
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Status<em class="text-danger">*</em></label
+            >
+            <div class="col-sm-6 col-md-6">
+              <nb-select
+                fullWidth
+                [placeholder]="'Status'"
+                [size]="'medium'"
+                formControlName="status"
+              >
+                <nb-option
+                  [value]="item"
+                  *ngFor="let item of commonService.statementStatusList"
+                  >{{ item }}</nb-option
+                >
+              </nb-select>
+            </div>
+          </div>
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label"></label>
+            <div class="col-sm-6 col-md-3">
+              <button
+                nbButton
+                fullWidth
+                status="primary"
+                [disabled]="form.invalid || loading"
+                [nbSpinner]="loading"
+                nbSpinnerStatus="info"
+                nbSpinnerSize=""
+                nbSpinnerMessage=""
+                (click)="onSearchStatement()"
+              >
+                <nb-icon icon="search-outline"></nb-icon>
+                Search
+              </button>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <button nbButton fullWidth status="basic" (click)="clear()">
+                <nb-icon icon="close-outline"></nb-icon>
+                Clear
+              </button>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+    <nb-card
+      *ngIf="isShowHeader"
+      nbSpinnerSize="giant"
+      [nbSpinner]="loading"
+      nbSpinnerStatus="primary"
+    >
+      <nb-card-header class="nb-card-font">
+        <div class="row align-items-center">
+          <div class="col-md-4">Statement Detail</div>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <ag-grid-angular
+          class="ag-theme-alpine"
+          domLayout="autoHeight"
+          [columnDefs]="columnDefs"
+          [defaultColDef]="defaultColDef"
+          [rowData]="rowData"
+          (paginationChanged)="onPaginationChanged($event)"
+          [pagination]="true"
+          [paginationPageSize]="paginationPageSize"
+          [enableBrowserTooltips]="true"
+          (rowClicked)="onSelectionStatement($event)"
+          (gridReady)="onGridReady($event)"
+          [animateRows]="true"
+          [sortingOrder]="sortingOrder"
+          rowSelection="single"
+          [enableCellTextSelection]="true"
+        >
+        </ag-grid-angular>
+      </nb-card-body>
+    </nb-card>
+    <nb-card
+      *ngIf="isLineShow"
+      nbSpinnerSize="giant"
+      [nbSpinner]="isLineLoading || isInvoiceLoading"
+      nbSpinnerStatus="primary"
+    >
+      <nb-card-header class="nb-card-font">
+        <div class="row align-items-center">
+          <div class="col-md-4">Receipt Header</div>
+          <div class="col-md-8">
+            <button
+              nbButton
+              status="basic"
+              class="ml-2 float-right"
+              size="small"
+              [disabled]="
+                tempHeader.statementStatus !== 'CONFIRMED' &&
+                tempHeader.isCreateReceipt !== true
+              "
+              [routerLink]="['../../rc001tx', tempHeader.statementId]"
+            >
+              <nb-icon icon="plus-outline"></nb-icon>
+              Create receipt
+            </button>
+            <button
+              nbButton
+              status="success"
+              class="ml-2 float-right"
+              size="small"
+              [disabled]="!buttonCheck.enableReceiptCompleteButton"
+              (click)="onComplete()"
+            >
+              <nb-icon icon="done-all-outline"></nb-icon>
+              Complete
+            </button>
+            <button
+              nbButton
+              status="danger"
+              class="ml-2 float-right"
+              size="small"
+              [disabled]="!buttonCheck.enableInCompleteButton"
+              (click)="inComplete()"
+            >
+              <nb-icon icon="close-outline"></nb-icon>
+              InComplete
+            </button>
+            <!--            <button-->
+            <!--              nbButton-->
+            <!--              status="basic"-->
+            <!--              size="small"-->
+            <!--              class="ml-2 float-right"-->
+            <!--              (click)="onMatchingReceipt()"-->
+            <!--            >-->
+            <!--              <nb-icon icon="sync-outline"></nb-icon>-->
+            <!--              matching-->
+            <!--            </button>-->
+          </div>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <ag-grid-angular
+          class="ag-theme-alpine"
+          domLayout="autoHeight"
+          [columnDefs]="columnLineDefs"
+          [defaultColDef]="defaultColDef"
+          [rowData]="lineData"
+          (paginationChanged)="onPaginationChanged($event)"
+          [pagination]="true"
+          [paginationPageSize]="paginationPageSize"
+          [enableBrowserTooltips]="true"
+          (rowClicked)="onSelectReciept($event)"
+          (gridReady)="onGridReadyLine($event)"
+          [animateRows]="true"
+          [sortingOrder]="sortingOrder"
+          rowSelection="single"
+          [enableCellTextSelection]="true"
+        >
+        </ag-grid-angular>
+      </nb-card-body>
+    </nb-card>
+    <nb-card
+      *ngIf="isShowInvoice"
+      nbSpinnerSize="giant"
+      [nbSpinner]="isInvoiceLoading"
+      nbSpinnerStatus="primary"
+    >
+      <nb-card-header> Invoice Detail </nb-card-header>
+      <nb-card-body>
+        <ag-grid-angular
+          class="ag-theme-alpine"
+          domLayout="autoHeight"
+          [columnDefs]="columnInvoiceDefs"
+          [defaultColDef]="defaultColDef"
+          [rowData]="invoiceData"
+          (paginationChanged)="onPaginationChanged($event)"
+          [pagination]="true"
+          [paginationPageSize]="paginationPageSize"
+          [enableBrowserTooltips]="true"
+          (gridReady)="onGridReadyInvoice($event)"
+          [animateRows]="true"
+          [sortingOrder]="sortingOrder"
+          rowSelection="single"
+        >
+        </ag-grid-angular>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

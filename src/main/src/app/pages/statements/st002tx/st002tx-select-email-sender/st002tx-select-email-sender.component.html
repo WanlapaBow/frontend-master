@@ -1,0 +1,56 @@
+<nb-card
+  size="tiny"
+  status="basic"
+  [nbSpinner]="loading"
+  nbSpinnerStatus="primary"
+  nbSpinnerSize="large"
+  nbSpinnerMessage=""
+>
+  <nb-card-header>Select Sender Email </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="form">
+      <div class="form-group row align-items-center">
+        <label class="label col-sm-3 col-md-3 col-form-label text-right"
+          >Sender Email</label
+        >
+        <div class="col-sm-6 col-md-9">
+          <nb-select
+            fullWidth
+            [placeholder]="'Select Host Name'"
+            [size]="'medium'"
+            formControlName="code"
+          >
+            <nb-option [value]="item.code" *ngFor="let item of emailSenderList">
+              {{ item.name }}</nb-option
+            >
+          </nb-select>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <button
+      class="float-right mr-2"
+      nbSpinnerStatus="info"
+      nbSpinnerSize="medium"
+      [disabled]="form.invalid"
+      nbButton
+      status="primary"
+      (click)="onSelect(form.value)"
+    >
+      Send Mail
+    </button>
+
+    <button
+      nbButton
+      status="basic"
+      class="float-right mr-2"
+      nbSpinnerStatus="info"
+      nbSpinnerSize="medium"
+      (click)="dismiss()"
+    >
+      <nb-icon icon="close-outline"></nb-icon>
+      Cancel
+    </button>
+  </nb-card-footer>
+</nb-card>

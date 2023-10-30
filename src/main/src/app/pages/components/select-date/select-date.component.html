@@ -1,0 +1,52 @@
+<nb-card
+  size="tiny"
+  status="basic"
+  [nbSpinner]="loading"
+  nbSpinnerStatus="primary"
+  nbSpinnerSize="large"
+  nbSpinnerMessage=""
+>
+  <nb-card-header>Select Date
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="form">
+      <div class="form-group row align-items-center">
+        <label class="label text-right col-sm-3 col-md-5 col-form-label">AdvancedReceipt Date</label>
+        <div class="col-sm-7 col-md-7">
+          <!--                  <input nbInput placeholder="เลือกช่วงเวลา" formControlName="accountingDate"-->
+          <!--                         [nbDatepicker]="accountDate"-->
+          <!--                         fullWidth readonly-->
+          <!--                         [status]="(accountingDate.invalid && (accountingDate.dirty || accountingDate.touched)) ? 'danger':'basic'"-->
+          <!--                         class="range-picker">-->
+          <input nbInput placeholder="เลือกช่วงเวลา" formControlName="date"
+                 [nbDatepicker]="accountDate" fullWidth readonly [status]="checkAccount ? 'basic' : 'danger'"
+                 class="range-picker"/>
+          <!--                            <nb-datepicker [min]="period.start" [max]="period.end" [filter]="filterWeekend"-->
+          <!--                                           #accountDate></nb-datepicker>-->
+          <nb-datepicker [min]="min" [max]="max" (dateChange)="changeAccountDate($event)" #accountDate>
+          </nb-datepicker>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <button
+      class="float-right mr-2"
+      nbSpinnerStatus="info"
+      nbSpinnerSize="medium"
+      [disabled]="form.invalid || !checkAccount  "
+      nbButton status="primary" (click)="onSelect(form.value)">
+      Create
+    </button>
+
+    <button nbButton
+            status="basic"
+            class="float-right mr-2"
+            nbSpinnerStatus="info"
+            nbSpinnerSize="medium" (click)="dismiss()">
+      <nb-icon icon="close-outline"></nb-icon>
+      Cancel
+    </button>
+
+  </nb-card-footer>
+</nb-card>

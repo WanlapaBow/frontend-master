@@ -1,0 +1,229 @@
+<div class="row">
+  <div class="col-lg-12">
+    <nb-card>
+      <nb-card-header class="nb-card-font">management Receipt</nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="form">
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Business Unit<em class="text-danger">*</em></label
+            >
+            <div class="col-sm-6 col-md-6">
+              <nb-select
+                fullWidth
+                [placeholder]="'Select Business Unit'"
+                [size]="'medium'"
+                formControlName="businessUnit"
+              >
+                <nb-option
+                  [value]="item.buId"
+                  *ngFor="let item of this.commonService.businessUnitList"
+                  >{{ item.buName }}</nb-option
+                >
+              </nb-select>
+            </div>
+          </div>
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Customer Class<em class="text-danger">*</em></label
+            >
+            <div class="col-sm-6 col-md-6">
+              <nb-select
+                fullWidth
+                [placeholder]="'Customer Class'"
+                [size]="'medium'"
+                formControlName="customerClass"
+              >
+                <nb-option
+                  [value]="item.code"
+                  *ngFor="let item of this.commonService.customerClassList"
+                  >{{ item.name }}</nb-option
+                >
+              </nb-select>
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="label text-right col-sm-3 col-md-2 col-form-label"
+              >Receipt Date From</label
+            >
+            <div class="col-sm-4 col-md-4">
+              <input
+                nbInput
+                placeholder="เลือกช่วงเวลา"
+                [nbDatepicker]="receiptdateFrom"
+                fullWidth
+                class="range-picker"
+                formControlName="receiptDateFrom"
+              />
+              <nb-datepicker #receiptdateFrom></nb-datepicker>
+            </div>
+            <label class="label text-center col-sm-1 col-md-1 col-form-label"
+              >-</label
+            >
+            <div class="col-sm-4 col-md-5">
+              <input
+                nbInput
+                placeholder="เลือกช่วงเวลา"
+                [nbDatepicker]="receiptdateTo"
+                fullWidth
+                class="range-picker"
+                formControlName="receiptDateTo"
+              />
+              <nb-datepicker #receiptdateTo></nb-datepicker>
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label"></label>
+            <div class="col-sm-6 col-md-3">
+              <!--              <button nbButton fullWidth status="primary" [disabled]="form.invalid || loading" [nbSpinner]="loading"-->
+              <button
+                nbButton
+                fullWidth
+                status="primary"
+                [disabled]="form.invalid || loading"
+                [nbSpinner]="loading"
+                (click)="onSearchReceipt()"
+              >
+                <nb-icon icon="search-outline"></nb-icon>
+                Search
+              </button>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <button nbButton fullWidth status="basic" (click)="clear()">
+                <nb-icon icon="close-outline"></nb-icon>
+                Clear
+              </button>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+
+    <nb-card *ngIf="isShowReceipt" [nbSpinner]="loading">
+      <nb-card-header>
+        <div class="row align-items-center">
+          <div class="col-md-4">Receipt Detail</div>
+          <div class="col-md-8">
+            <button
+              nbButton
+              status="basic"
+              size="small"
+              class="ml-2 float-right"
+              [routerLink]="['../rc006tx']"
+            >
+              <nb-icon icon="plus-outline"></nb-icon>
+              Create receipt
+            </button>
+            <button
+              nbButton
+              status="basic"
+              size="small"
+              class="ml-2 float-right"
+              (click)="onMatchingReceipt()"
+            >
+              <nb-icon icon="sync-outline"></nb-icon>
+              matching receipt
+            </button>
+          </div>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <ag-grid-angular
+          class="ag-theme-alpine"
+          domLayout="autoHeight"
+          [columnDefs]="columnReceiptDefs"
+          [defaultColDef]="defaultColDef"
+          [rowData]="receiptData"
+          [pagination]="true"
+          [paginationPageSize]="paginationPageSize"
+          [enableBrowserTooltips]="true"
+          (rowSelected)="onSelectReciept($event)"
+          (gridReady)="onGridReadyReceipt($event)"
+          [animateRows]="true"
+          [sortingOrder]="sortingOrder"
+          rowSelection="single"
+          [enableCellTextSelection]="true"
+        >
+        </ag-grid-angular>
+      </nb-card-body>
+    </nb-card>
+
+    <nb-card
+      *ngIf="isShowInvoice"
+      [nbSpinner]="isInvoiceloading"
+      nbSpinnerStatus="primary"
+      nbSpinnerSize="large"
+      nbSpinnerMessage=""
+    >
+      <nb-card-header>
+        <div class="row">
+          <div class="col-md-2">Invoice Detail</div>
+          <div class="col-md-10">
+            <div class="float-right">
+              <ngx-pagination
+                (onPageSizeChanged)="onInvoicePageSizeChanged($event)"
+                (onBtFirst)="onBtInvoice($event)"
+                (onBtNext)="onBtInvoice($event)"
+                (onBtPrevious)="onBtInvoice($event)"
+                (onBtLast)="onBtInvoice($event)"
+                [totalPages]="invoiceTotalPages"
+                [pageSize]="invoicePaginationPageSize"
+                [isFirstPage]="isInvoiceFirstPage"
+                [isLastPage]="isInvoiceLastPage"
+              >
+              </ngx-pagination>
+            </div>
+          </div>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <ag-grid-angular
+          class="ag-theme-alpine"
+          domLayout="autoHeight"
+          [columnDefs]="columnInvoiceDefs"
+          [defaultColDef]="defaultColDef"
+          [rowData]="invoiceData"
+          [paginationPageSize]="invoicePaginationPageSize"
+          [enableBrowserTooltips]="true"
+          (gridReady)="onGridReadyInvoice($event)"
+          (rowSelected)="onSelectInvoice($event)"
+          [animateRows]="true"
+          [sortingOrder]="sortingOrder"
+          rowSelection="single"
+          [enableCellTextSelection]="true"
+        >
+        </ag-grid-angular>
+      </nb-card-body>
+    </nb-card>
+
+    <nb-card
+      *ngIf="isShowStatement"
+      [nbSpinner]="isStatementloading"
+      nbSpinnerStatus="primary"
+      nbSpinnerSize="large"
+      nbSpinnerMessage=""
+    >
+      <nb-card-header> Statement Detail </nb-card-header>
+      <nb-card-body>
+        <ag-grid-angular
+          class="ag-theme-alpine"
+          domLayout="autoHeight"
+          [columnDefs]="columnStatementDefs"
+          [defaultColDef]="defaultColDef"
+          [rowData]="statementData"
+          [pagination]="true"
+          [paginationPageSize]="paginationPageSize"
+          [enableBrowserTooltips]="true"
+          (gridReady)="onGridReadyStatement($event)"
+          [animateRows]="true"
+          [sortingOrder]="sortingOrder"
+          rowSelection="single"
+          [enableCellTextSelection]="true"
+        >
+        </ag-grid-angular>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

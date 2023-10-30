@@ -1,0 +1,82 @@
+<nb-card
+  size="giant"
+  status="basic"
+  [nbSpinner]="loading"
+  nbSpinnerStatus="primary"
+  nbSpinnerSize="large"
+  nbSpinnerMessage=""
+>
+  <nb-card-header
+    >Search Customer
+    <form [formGroup]="form">
+      <div class="pb-3">
+        <nb-form-field class="pb-2">
+          <input
+            nbInput
+            fullWidth
+            status="info"
+            formControlName="customerCode"
+            placeholder="Search Customer Number"
+          />
+          <button nbSuffix nbButton ghost (click)="onSearch('Number')">
+            <nb-icon pack="eva" [icon]="'search-outline'"> </nb-icon>
+          </button>
+        </nb-form-field>
+
+        <nb-form-field class="pb-2">
+          <input
+            nbInput
+            fullWidth
+            status="info"
+            formControlName="customerName"
+            placeholder="Search Customer Name"
+          />
+          <button nbSuffix nbButton ghost (click)="onSearch('Name')">
+            <nb-icon pack="eva" [icon]="'search-outline'"> </nb-icon>
+          </button>
+        </nb-form-field>
+
+        <nb-form-field>
+          <input
+            nbInput
+            fullWidth
+            status="info"
+            formControlName="siteNumber"
+            placeholder="Search Site Number"
+          />
+          <button nbSuffix nbButton ghost (click)="onSearch('Site')">
+            <nb-icon pack="eva" [icon]="'search-outline'"> </nb-icon>
+          </button>
+        </nb-form-field>
+      </div>
+    </form>
+  </nb-card-header>
+  <nb-card-body>
+    <nb-list *ngIf="isShowList">
+      <nb-list-item *ngFor="let list of customerList" (click)="onSelect(list)">
+        <nb-user
+          shape="semi-round"
+          [name]="list.customerName"
+          [title]="
+            'Customer Number :' +
+            list.customerCode +
+            ', Site Number : ' +
+            list.siteNumber
+          "
+        >
+        </nb-user>
+      </nb-list-item>
+    </nb-list>
+    <div class="row" *ngIf="!isShowList">
+      <div class="col text-center">
+        <p>No Result</p>
+      </div>
+    </div>
+  </nb-card-body>
+  <nb-card-footer>
+    <button nbButton fullWidth status="basic" (click)="dismiss()">
+      <nb-icon icon="close-outline"></nb-icon>
+      Cancel
+    </button>
+  </nb-card-footer>
+</nb-card>

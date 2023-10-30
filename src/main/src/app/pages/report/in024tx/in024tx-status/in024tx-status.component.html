@@ -1,0 +1,64 @@
+<div class="row align-items-center">
+  <div class="col">
+    <!--    <nb-icon-->
+    <!--      [icon]="stepSync.icon"-->
+    <!--      [status]="stepSync.color"-->
+    <!--      [nbTooltip]="'Sync Data is : ' + stepSync.msg"-->
+    <!--      nbTooltipStatus="primary"-->
+    <!--      *ngIf="stepSync.title != 'run'"-->
+    <!--    >-->
+    <!--    </nb-icon>-->
+    <!--    <div-->
+    <!--      class="spinner-border text-primary spinner-border-sm loading-size"-->
+    <!--      role="status"-->
+    <!--      [nbTooltip]="'Sync Data is : ' + stepSync.msg"-->
+    <!--      nbTooltipStatus="primary"-->
+    <!--      *ngIf="stepSync.title == 'run'"-->
+    <!--    >-->
+    <!--      <span class="sr-only"></span>-->
+    <!--    </div>-->
+
+    <!--    <nb-icon icon="arrowhead-right-outline" class="text-black-50"></nb-icon>-->
+
+    <nb-icon
+      [icon]="stepImport.icon"
+      [status]="stepImport.color"
+      [nbTooltip]="'Import Data is : ' + stepImport.msg"
+      nbTooltipStatus="primary"
+      *ngIf="stepImport.title != 'run'"
+    >
+    </nb-icon>
+    <div
+      class="spinner-border text-primary loading-size spinner-border-sm"
+      role="status"
+      [nbTooltip]="'Import Data is : ' + stepImport.msg"
+      nbTooltipStatus="primary"
+      *ngIf="stepImport.title == 'run'"
+    >
+      <span class="sr-only"></span>
+    </div>
+    <nb-icon icon="arrowhead-right-outline" class="text-black-50"></nb-icon>
+
+    <nb-icon
+      [icon]="stepReport.icon"
+      [status]="stepReport.color"
+      [nbTooltip]="'Report is : ' + stepReport.msg"
+      nbTooltipStatus="primary"
+      *ngIf="stepReport.title != 'run'"
+    >
+    </nb-icon>
+    <div
+      class="spinner-border text-primary loading-size spinner-border-sm"
+      role="status"
+      [nbTooltip]="'Report is : ' + stepReport.msg"
+      nbTooltipStatus="primary"
+      *ngIf="stepReport.title == 'run'"
+    >
+      <span class="sr-only"></span>
+    </div>
+  </div>
+</div>
+
+<!--<nb-icon icon="close-circle-outline" status="danger"-->
+<!--         nbTooltip="This is a tooltip" nbTooltipIcon="home-outline"></nb-icon>-->
+<!--{{params.data['jobInfoStatus']}}-->

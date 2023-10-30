@@ -1,0 +1,174 @@
+<nb-card size="giant" status="basic">
+  <nb-card-header>Search Invoice</nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="form">
+      <div class="form-group row align-items-center">
+        <label class="label col-sm-3 col-md-2 col-form-label text-right"
+          >Statement Number</label
+        >
+        <div class="col-sm-6 col-md-6">
+          <input
+            nbInput
+            fullWidth
+            type="text"
+            placeholder="search statement Number"
+            formControlName="statementNumber"
+            [nbAutocomplete]="autoControlNumber"
+            #searchStatementNum
+          />
+          <nb-autocomplete #autoControlNumber>
+            <nb-option
+              *ngFor="let option of statementNumberList$"
+              [value]="option.code"
+            >
+              {{ option.name }}
+            </nb-option>
+          </nb-autocomplete>
+        </div>
+      </div>
+      <div class="form-group row align-items-center">
+        <label class="label col-sm-3 col-md-2 col-form-label"></label>
+        <div class="col-sm-6 col-md-3">
+          <button
+            nbButton
+            fullWidth
+            status="primary"
+            [disabled]="form.invalid || loading"
+            [nbSpinner]="loading"
+            nbSpinnerStatus="info"
+            nbSpinnerSize=""
+            nbSpinnerMessage=""
+            (click)="onSearchStatement()"
+          >
+            <nb-icon icon="search-outline"></nb-icon>
+            Search
+          </button>
+        </div>
+      </div>
+    </form>
+    <div
+      *ngIf="isShowStatement"
+      [nbSpinner]="isStatementloading"
+      nbSpinnerStatus="primary"
+      nbSpinnerSize="large"
+      nbSpinnerMessage=""
+    >
+      <hr />
+      <div class="row align-items-center">
+        <div class="col-md-3"><h5>Statement Detail</h5></div>
+        <div class="col-md-9">
+          <div class="float-right">
+            <ngx-pagination
+              (onPageSizeChanged)="onStatementPageSizeChanged($event)"
+              (onBtFirst)="onBtStatement($event)"
+              (onBtNext)="onBtStatement($event)"
+              (onBtPrevious)="onBtStatement($event)"
+              (onBtLast)="onBtStatement($event)"
+              [totalPages]="statementTotalPages"
+              [pageSize]="statementPaginationPageSize"
+              [isFirstPage]="isStatementFirstPage"
+              [isLastPage]="isStatementLastPage"
+            >
+            </ngx-pagination>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <ag-grid-angular
+        class="ag-theme-alpine"
+        domLayout="autoHeight"
+        [columnDefs]="columnStatementDefs"
+        [defaultColDef]="defaultColDef"
+        [rowData]="statementPopupData"
+        [pagination]="true"
+        [paginationPageSize]="statementPaginationPageSize"
+        [enableBrowserTooltips]="true"
+        (rowClicked)="onSelectionStatement($event)"
+        (gridReady)="onGridStatementReady($event)"
+        [animateRows]="true"
+        [rowDeselection]="true"
+        [sortingOrder]="sortingOrder"
+        rowSelection="single"
+      >
+      </ag-grid-angular>
+    </div>
+    <div
+      *ngIf="isShowInvoice"
+      [nbSpinner]="isInvoiceloading"
+      nbSpinnerStatus="primary"
+      nbSpinnerSize="large"
+      nbSpinnerMessage=""
+    >
+      <hr />
+      <div class="row align-items-center">
+        <div class="col-md-3">
+          <h5>Invoice Detail</h5>
+        </div>
+        <div class="col-md-9">
+          <div class="float-right">
+            <ngx-pagination
+              (onPageSizeChanged)="onInvoicePageSizeChanged($event)"
+              (onBtFirst)="onBtInvoice($event)"
+              (onBtNext)="onBtInvoice($event)"
+              (onBtPrevious)="onBtInvoice($event)"
+              (onBtLast)="onBtInvoice($event)"
+              [totalPages]="invoiceTotalPages"
+              [pageSize]="invoicePaginationPageSize"
+              [isFirstPage]="isInvoiceFirstPage"
+              [isLastPage]="isInvoiceLastPage"
+            >
+            </ngx-pagination>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <ag-grid-angular
+        class="ag-theme-alpine"
+        domLayout="autoHeight"
+        [columnDefs]="columnInvoiceDefs"
+        [defaultColDef]="defaultColDef"
+        [rowData]="invoiceData"
+        [pagination]="true"
+        [paginationPageSize]="invoicePaginationPageSize"
+        [enableBrowserTooltips]="true"
+        (gridReady)="onGridReadyInvoice($event)"
+        [rowSelection]="rowSelection"
+        (rowSelected)="onInvoiceValueChange($event)"
+        [suppressClickEdit]="true"
+        [suppressRowClickSelection]="true"
+        rowSelection="multiple"
+      >
+      </ag-grid-angular>
+    </div>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="row">
+      <div class="col-md-6 col-sm-6">
+        <button
+          nbButton
+          fullWidth
+          status="basic"
+          nbSpinnerStatus="info"
+          nbSpinnerSize=""
+          nbSpinnerMessage=""
+          (click)="dismiss()"
+        >
+          <nb-icon icon="close-outline"></nb-icon>
+          Cancel
+        </button>
+      </div>
+      <div class="col-md-6 col-sm-6">
+        <button
+          nbButton
+          fullWidth
+          status="primary"
+          [disabled]="invoiceSelectList.length === 0"
+          (click)="onSave()"
+        >
+          <nb-icon icon="save-outline"></nb-icon>
+          Confirm
+        </button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>

@@ -1,0 +1,36 @@
+<!--
+    Configuration file for UrlRewriteFilter
+    http://www.tuckey.org/urlrewrite/
+-->
+<urlrewrite>
+    <rule>
+        <note>
+        Redirect from root to frontend
+        </note>
+        <from>^/$</from>
+        <to>/index.html</to>
+    </rule>
+     <rule>
+        <from>^/callback/?(.*)</from>
+        <to>/index.html</to>
+    </rule>
+    <rule>
+        <from>^/auth/?(.*)</from>
+        <to>/index.html</to>
+    </rule>
+
+    <rule>
+        <note>
+        Redirect from concrete HTML to view path
+        </note>
+        <from>^/index.html(.*)</from>
+        <to>/index.html</to>
+    </rule>
+    <rule>
+        <note>
+        Enable client side routing by forwarding all frontend requests to index.html
+        </note>
+        <from>^/pages/?(.*)</from>
+        <to>/index.html</to>
+    </rule>
+</urlrewrite>

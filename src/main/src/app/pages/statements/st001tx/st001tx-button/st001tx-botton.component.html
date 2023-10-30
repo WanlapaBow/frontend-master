@@ -1,0 +1,93 @@
+<button
+  class="btn"
+  nbButton
+  size="small"
+  [disabled]="
+    !(
+      params.data['requestId'] !== null &&
+      params.data['jobInfoStatus'] === 'Completed' &&
+      params.data['successStatement'] !== 0
+    )
+  "
+  status="primary"
+  (click)="onClickPdf()"
+>
+  <nb-icon icon="file-outline"></nb-icon>
+  PDF
+</button>
+
+<button
+  *ngIf="params.data['pcustomerClass'] === 'KBANK'"
+  class="btn ml-2"
+  nbButton
+  size="small"
+  [disabled]="
+    !(
+      params.data['requestId'] !== null &&
+      params.data['jobInfoStatus'] === 'Completed' &&
+      params.data['successStatement'] !== 0
+    )
+  "
+  status="primary"
+  (click)="onClickPdfKbank()"
+>
+  <nb-icon icon="file-outline"></nb-icon>
+  PDF (KBANK)
+</button>
+
+<button
+  class="btn ml-2"
+  nbButton
+  size="small"
+  [disabled]="
+    !(
+      params.data['requestId'] !== null &&
+      params.data['jobInfoStatus'] === 'Completed' &&
+      params.data['successStatement'] !== 0
+    )
+  "
+  status="primary"
+  (click)="onClickExcel()"
+>
+  <nb-icon icon="file-outline"></nb-icon>
+  EXCEL
+</button>
+
+<button
+  *ngIf="params.data['pcustomerClass'] === 'KBANK'"
+  class="btn ml-2"
+  nbButton
+  size="small"
+  [disabled]="
+    !(
+      params.data['requestId'] !== null &&
+      params.data['jobInfoStatus'] === 'Completed' &&
+      params.data['successStatement'] !== 0
+    )
+  "
+  status="primary"
+  (click)="onClickExcelKbank()"
+>
+  <nb-icon icon="file-outline"></nb-icon>
+  EXCEL (KBANK)
+</button>
+
+<button
+  *ngIf="params.data['psendEmail'] === true"
+  class="btn ml-3"
+  nbButton
+  size="small"
+  status="primary"
+  [disabled]="
+    params.data['psendEmail'] === false ||
+    !(
+      params.data['requestId'] !== null &&
+      params.data['jobInfoStatus'] === 'Completed' &&
+      params.data['successStatement'] !== 0
+    )
+  "
+  (click)="onLogFile()"
+>
+  <nb-icon icon="email-outline"></nb-icon>
+  Log Email
+</button>

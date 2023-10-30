@@ -1,0 +1,161 @@
+<div class="row">
+  <div class="col-lg-12">
+    <nb-card
+      nbSpinnerStatus="primary"
+      nbSpinnerSize="large"
+      nbSpinnerMessage=""
+    >
+      <nb-card-header class="nb-card-font">Sign up Email Sender</nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="form">
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Email</label
+            >
+            <div class="col-sm-6 col-md-6">
+              <input
+                fullWidth
+                type="text"
+                nbInput
+                placeholder="input email"
+                formControlName="emailSender"
+              />
+            </div>
+          </div>
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Password</label
+            >
+            <div class="col-sm-6 col-md-6">
+              <nb-form-field>
+                <input
+                  fullWidth
+                  type="text"
+                  nbInput
+                  placeholder="input password"
+                  formControlName="password"
+                  [type]="getInputType()"
+                  nbInput
+                />
+                <button nbSuffix nbButton ghost (click)="toggleShowPassword()">
+                  <nb-icon
+                    [icon]="showPassword ? 'eye-outline' : 'eye-off-2-outline'"
+                    pack="eva"
+                    [attr.aria-label]="
+                      showPassword ? 'hide password' : 'show password'
+                    "
+                  >
+                  </nb-icon>
+                </button>
+              </nb-form-field>
+            </div>
+          </div>
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Host Name</label
+            >
+            <div class="col-sm-6 col-md-6">
+              <nb-select
+                fullWidth
+                [placeholder]="'Select Host Name'"
+                [size]="'medium'"
+                formControlName="hostName"
+              >
+                <nb-option
+                  [value]="item.code"
+                  *ngFor="let item of hostNameList"
+                >
+                  {{ item.name }}</nb-option
+                >
+              </nb-select>
+            </div>
+          </div>
+          <div class="form-group row align-items-center">
+            <label
+              class="label col-sm-3 col-md-2 col-form-label text-right"
+            ></label>
+            <div class="col-sm-6 col-md-3">
+              <button
+                nbButton
+                fullWidth
+                status="primary"
+                type="submit"
+                [disabled]="form.invalid || loadingSignUp"
+                [nbSpinner]="loadingSignUp"
+                nbSpinnerStatus="info"
+                nbSpinnerSize=""
+                nbSpinnerMessage=""
+                (click)="onSubmit()"
+              >
+                <nb-icon icon="plus-outline"></nb-icon>
+                Sign up
+              </button>
+            </div>
+
+            <div class="col-sm-6 col-md-3">
+              <button nbButton fullWidth status="basic" (click)="clearData()">
+                <nb-icon icon="close-outline"></nb-icon>
+                Clear
+              </button>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+
+    <nb-card>
+      <nb-card-header class="nb-card-font">
+        <div class="row align-items-center">
+          <div class="col-md-4">Email Sender</div>
+          <div class="col-md-8">
+            <button
+              nbButton
+              status="primary"
+              [disabled]="loadingSave"
+              [nbSpinner]="loadingSave"
+              class="ml-1 float-right"
+              nbSpinnerStatus="info"
+              nbSpinnerSize="medium"
+              nbSpinnerMessage=""
+              (click)="onSave()"
+            >
+              save
+            </button>
+            <button
+              nbButton
+              status="warning"
+              class="ml-1 float-right"
+              nbSpinnerStatus="info"
+              nbSpinnerSize="medium"
+              nbSpinnerMessage=""
+              (click)="onEdit()"
+            >
+              <nb-icon icon="plus-outline"></nb-icon>
+              edit
+            </button>
+          </div>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <ag-grid-angular
+          class="ag-theme-alpine"
+          domLayout="autoHeight"
+          [columnDefs]="columnLogDefs"
+          [defaultColDef]="defaultColDef"
+          [rowData]="logData"
+          [paginationPageSize]="paginationPageSize"
+          [enableBrowserTooltips]="true"
+          (gridReady)="onGridLogReady($event)"
+          [context]="context"
+          rowSelection="single"
+          (selectionChanged)="onSelection($event)"
+          (cellValueChanged)="onCellValueChanged($event)"
+          [animateRows]="true"
+          [enableCellTextSelection]="true"
+          [sortingOrder]="sortingOrder"
+        >
+        </ag-grid-angular>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

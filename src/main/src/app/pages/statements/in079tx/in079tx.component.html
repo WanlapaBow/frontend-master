@@ -1,0 +1,370 @@
+<div class="row">
+  <div class="col-lg-12">
+    <nb-card>
+      <nb-card-header>Prop ID Editor</nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="form">
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Receipt Method</label
+            >
+            <div class="col-sm-3 col-md-3">
+              <nb-select
+                fullWidth
+                [placeholder]="'Select Receipt Method'"
+                [size]="'medium'"
+                formControlName="receiptMethod"
+              >
+                <nb-option
+                  [value]="item.code"
+                  *ngFor="let item of receiptMethodList"
+                  >{{ item.name }}</nb-option
+                >
+              </nb-select>
+            </div>
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Bank Account</label
+            >
+            <div class="col-sm-3 col-md-3">
+              <nb-form-field>
+                <input
+                  nbInput
+                  fullWidth
+                  type="text"
+                  placeholder="search Bank Account"
+                  formControlName="bankAccount"
+                  (click)="getBankAccount()"
+                  [nbAutocomplete]="autoControlBankAccount"
+                  #searchBankAccount
+                />
+                <nb-autocomplete #autoControlBankAccount>
+                  <nb-option
+                    *ngFor="let option of bankAccountList$"
+                    [value]="option.code"
+                  >
+                    {{ option.name }}
+                  </nb-option>
+                </nb-autocomplete>
+                <button nbSuffix nbButton ghost (click)="onClearBankAccount()">
+                  <nb-icon icon="close-outline" pack="eva"> </nb-icon>
+                </button>
+              </nb-form-field>
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Agent Name</label
+            >
+            <div class="col-sm-6 col-md-8">
+              <nb-form-field>
+                <input
+                  nbInput
+                  fullWidth
+                  type="text"
+                  placeholder="search Agent Name"
+                  formControlName="agentName"
+                  (click)="getPartyName()"
+                  [nbAutocomplete]="autoControlAgentName"
+                  #searchAgentName
+                />
+                <nb-autocomplete #autoControlAgentName>
+                  <nb-option
+                    *ngFor="let option of agentNameList$"
+                    [value]="option.code"
+                  >
+                    {{ option.name }}
+                  </nb-option>
+                </nb-autocomplete>
+                <button nbSuffix nbButton ghost (click)="onClearAgentName()">
+                  <nb-icon icon="close-outline" pack="eva"> </nb-icon>
+                </button>
+              </nb-form-field>
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Agent Number</label
+            >
+            <div class="col-sm-3 col-md-3">
+              <nb-form-field>
+                <input
+                  nbInput
+                  fullWidth
+                  type="text"
+                  placeholder="search Agent Number"
+                  formControlName="agentNumber"
+                  (click)="getPartyNumber()"
+                  [nbAutocomplete]="autoControlAgentNumber"
+                  #searchAgentNumber
+                />
+                <nb-autocomplete #autoControlAgentNumber>
+                  <nb-option
+                    *ngFor="let option of agentNumberList$"
+                    [value]="option.code"
+                  >
+                    {{ option.name }}
+                  </nb-option>
+                </nb-autocomplete>
+                <button nbSuffix nbButton ghost (click)="onClearAgentNumber()">
+                  <nb-icon icon="close-outline" pack="eva"> </nb-icon>
+                </button>
+              </nb-form-field>
+            </div>
+
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Insured Name</label
+            >
+            <div class="col-sm-3 col-md-3">
+              <input
+                nbInput
+                fullWidth
+                type="text"
+                placeholder="Input Insured Name"
+                formControlName="insuredName"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Receipt Number</label
+            >
+            <div class="col-sm-6 col-md-8">
+              <nb-form-field>
+                <input
+                  nbInput
+                  fullWidth
+                  type="text"
+                  placeholder="search Receipt Number"
+                  formControlName="receiptNumber"
+                  (click)="getReceiptNumber()"
+                  [nbAutocomplete]="autoControlReceiptNumber"
+                  #searchReceiptNumber
+                />
+                <nb-autocomplete #autoControlReceiptNumber>
+                  <nb-option
+                    *ngFor="let option of receiptNumberList$"
+                    [value]="option.code"
+                  >
+                    {{ option.name }}
+                  </nb-option>
+                </nb-autocomplete>
+                <button
+                  nbSuffix
+                  nbButton
+                  ghost
+                  (click)="onClearReceiptNumber()"
+                >
+                  <nb-icon icon="close-outline" pack="eva"> </nb-icon>
+                </button>
+              </nb-form-field>
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Receipt Date From - To</label
+            >
+            <div class="col-sm-3 col-md-3">
+              <input
+                fullWidth
+                nbInput
+                placeholder="Select DateFrom-DateTo"
+                [nbDatepicker]="formpicker"
+                formControlName="periodDate"
+              />
+              <nb-rangepicker #formpicker></nb-rangepicker>
+            </div>
+
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Receipt Amount</label
+            >
+            <div class="col-sm-3 col-md-3">
+              <input
+                fullWidth
+                nbInput
+                placeholder="Input Receipt Amount"
+                formControlName="receiptAmount"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right"
+              >Prop ID/Reference</label
+            >
+            <div class="col-sm-6 col-md-8">
+              <nb-form-field>
+                <input
+                  nbInput
+                  fullWidth
+                  type="text"
+                  placeholder="search Prop ID/Reference"
+                  formControlName="propId"
+                  [nbAutocomplete]="autoControlPropId"
+                  #searchPropId
+                />
+                <nb-autocomplete #autoControlPropId>
+                  <nb-option
+                    *ngFor="let option of propIdList$"
+                    [value]="option.code"
+                  >
+                    {{ option.name }}
+                  </nb-option>
+                </nb-autocomplete>
+                <button nbSuffix nbButton ghost (click)="onClearPropId()">
+                  <nb-icon icon="close-outline" pack="eva"> </nb-icon>
+                </button>
+              </nb-form-field>
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label"></label>
+            <div class="col-sm-6 col-md-4">
+              <button
+                nbButton
+                fullWidth
+                status="primary"
+                (click)="getPropIdLog()"
+                [disabled]="isLoading"
+                [nbSpinner]="isLoading"
+                nbSpinnerStatus="primary"
+              >
+                <nb-icon icon="search-outline"></nb-icon>
+                Search
+              </button>
+            </div>
+            <div class="col-sm-6 col-md-4">
+              <button nbButton fullWidth status="basic" (click)="clearData()">
+                <nb-icon icon="close-outline"></nb-icon>
+                Clear
+              </button>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+
+    <nb-card
+      *ngIf="isShowEdit"
+      nbSpinnerStatus="primary"
+      nbSpinnerSize="large"
+      nbSpinnerMessage=""
+    >
+      <nb-card-header class="nb-card-font">
+        <div class="row align-items-center">
+          <div class="col-md-2 col-lg-2 col-sm-12">Receipt Detail</div>
+          <div class="col-md-10 col-lg-10 col-sm-12">
+            <div class="float-right">
+              <button
+                nbButton
+                size="small"
+                status="primary"
+                class="mr-2 float-right"
+                nbSpinnerStatus="info"
+                nbSpinnerSize=""
+                nbSpinnerMessage=""
+                nbContextMenuPlacement="bottom"
+                nbContextMenuTag="download-menu"
+                (click)="next()"
+              >
+                NEXT
+                <nb-icon icon="arrow-ios-forward-outline"></nb-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </nb-card-header>
+
+      <nb-card-body>
+        <ag-grid-angular
+          class="ag-theme-alpine"
+          domLayout="autoHeight"
+          [columnDefs]="columnDefsEdit"
+          [defaultColDef]="defaultColDef"
+          [rowData]="rowData"
+          [pagination]="true"
+          [paginationPageSize]="paginationPageSize"
+          [enableCellTextSelection]="true"
+          [enableBrowserTooltips]="true"
+          (gridReady)="onGridReady($event)"
+          (cellEditingStarted)="onCellEditStart($event)"
+          (cellEditingStopped)="onCellEditStop($event)"
+          rowSelection="multiple"
+        >
+        </ag-grid-angular>
+      </nb-card-body>
+    </nb-card>
+
+    <nb-card
+      *ngIf="isShowSubmit"
+      nbSpinnerStatus="primary"
+      nbSpinnerSize="large"
+      nbSpinnerMessage=""
+    >
+      <nb-card-header class="nb-card-font">
+        <div class="row align-items-center">
+          <div class="col-md-2 col-lg-2 col-sm-12">Receipt Detail</div>
+          <div class="col-md-10 col-lg-10 col-sm-12">
+            <div class="float-right">
+              <button
+                nbButton
+                size="small"
+                status="primary"
+                class="mr-2 float-right"
+                nbSpinnerStatus="info"
+                nbSpinnerSize=""
+                nbSpinnerMessage=""
+                nbContextMenuPlacement="bottom"
+                nbContextMenuTag="download-menu"
+                (click)="submit()"
+              >
+                <nb-icon icon="save-outline"></nb-icon>
+                Submit
+              </button>
+            </div>
+            <div class="float-right">
+              <button
+                nbButton
+                size="small"
+                status="warning"
+                class="mr-2 float-right"
+                nbSpinnerStatus="info"
+                nbSpinnerSize=""
+                nbSpinnerMessage=""
+                nbContextMenuPlacement="bottom"
+                nbContextMenuTag="download-menu"
+                (click)="back()"
+              >
+                <nb-icon icon="arrow-ios-back-outline"></nb-icon>
+                Back
+              </button>
+            </div>
+          </div>
+        </div>
+      </nb-card-header>
+
+      <nb-card-body>
+        <ag-grid-angular
+          class="ag-theme-alpine"
+          domLayout="autoHeight"
+          [columnDefs]="columnDefsSubmit"
+          [defaultColDef]="defaultColDef"
+          [rowData]="rowData"
+          [pagination]="true"
+          [paginationPageSize]="paginationPageSize"
+          [enableCellTextSelection]="true"
+          [enableBrowserTooltips]="true"
+          (gridReady)="onGridReady($event)"
+          (cellEditingStarted)="onCellEditStart($event)"
+          (cellEditingStopped)="onCellEditStop($event)"
+          rowSelection="multiple"
+        >
+        </ag-grid-angular>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

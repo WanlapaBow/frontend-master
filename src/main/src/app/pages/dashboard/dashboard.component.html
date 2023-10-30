@@ -1,0 +1,61 @@
+<div class="row">
+  <nb-card>
+    <nb-card-body>Hello from ngx-admin sandbox project.</nb-card-body>
+    <form [formGroup]="form">
+      <div class="form-group row align-items-center">
+        <label class="label col-sm-3 col-md-2 col-form-label">Number</label>
+        <div class="col-sm-6 col-md-6">
+          <input
+            fullWidth
+            type="text"
+            nbInput
+            placeholder="Customer Name"
+            formControlName="numberCount"
+          />
+        </div>
+      </div>
+      <div class="form-group row align-items-center">
+        <label class="label col-sm-3 col-md-2 col-form-label"></label>
+        <div class="col-sm-6 col-md-3">
+          <button nbButton fullWidth status="primary" (click)="run()">
+            <nb-icon icon="plus-outline"></nb-icon>
+            Run
+          </button>
+        </div>
+      </div>
+    </form>
+  </nb-card>
+  <nb-card class="table-display">
+    <nb-card-body>
+      <div *ngFor="let item of starData">{{ item }}</div>
+    </nb-card-body>
+  </nb-card>
+</div>
+<!-- <nb-card class="table-display">
+  <nb-card-header class="nb-card-font">Results</nb-card-header>
+  <nb-card-body>
+    <ag-grid-angular
+      class="ag-theme-alpine"
+      domLayout="autoHeight"
+      [columnDefs]="columnDefs"
+      [defaultColDef]="defaultColDef"
+      [rowData]="rowData"
+      (selectionChanged)="onSelectionChanged($event)"
+      rowSelection='multiple'
+      (gridReady)="onGridReady($event)"
+    >
+    </ag-grid-angular>
+  </nb-card-body>
+
+  <nb-card-body *ngIf="isShowDetail">
+    <ag-grid-angular
+      class="ag-theme-alpine"
+      domLayout="autoHeight"
+      [columnDefs]="columnDetailDefs"
+      [defaultColDef]="defaultColDef"
+      [rowData]="rowDataDetails"
+
+    >
+    </ag-grid-angular>
+  </nb-card-body>
+  </nb-card> -->

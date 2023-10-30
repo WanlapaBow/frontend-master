@@ -1,0 +1,151 @@
+<div class="row">
+  <div class="col-lg-12">
+    <nb-card>
+      <nb-card-header>Statement Excel Report</nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="form">
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right">Business Unit<em class='text-danger'>*</em></label>
+            <div class="col-sm-6 col-md-6">
+              <nb-select fullWidth [placeholder]="'Select Business Unit'" [size]="'medium'"
+                         formControlName="businessUnit">
+                <nb-option [value]="item.buId"
+                           *ngFor="let item of this.commonService.businessUnitList">{{item.buName}}</nb-option>
+              </nb-select>
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right">Customer Class<em
+              class='text-danger'>*</em></label>
+            <div class="col-sm-6 col-md-6">
+              <nb-select fullWidth [placeholder]="'Customer Class'" [status]="customerClassInvalid ? 'danger' : 'basic'"
+                         [size]="'medium'" (selectedChange)="onChangeCustomerClass()" formControlName="customerClass"
+                         (selectedChange)="onCustomerClassChange()">
+                <nb-option [value]="item.code"
+                           *ngFor="let item of this.commonService.customerClassList">{{item.name}}</nb-option>
+              </nb-select>
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right">Customer Name</label>
+            <div class="col-sm-6 col-md-6">
+              <nb-form-field>
+                <input fullWidth type="text" placeholder="Click to Search Customer Name"
+                       formControlName="customerName" readonly nbInput>
+
+                <div nbSuffix class="width-button-search">
+                  <button nbButton ghost (click)="onClearInput()">
+                    <nb-icon icon="close-outline"
+                             pack="eva">
+                    </nb-icon>
+                  </button>
+                  <button nbButton (click)="onSearchCustomer()">
+                    <nb-icon icon="search-outline"
+                             pack="eva">
+                    </nb-icon>
+                  </button>
+                </div>
+              </nb-form-field>
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right">Site Number</label>
+            <div class="col-sm-6 col-md-6">
+              <nb-form-field>
+                <input fullWidth type="text" placeholder="Click to Search Site Number"
+                       formControlName="siteNumber" readonly nbInput>
+                <div nbSuffix class="width-button-search">
+                  <button nbButton ghost (click)="onClearInput()">
+                    <nb-icon icon="close-outline"
+                             pack="eva">
+                    </nb-icon>
+                  </button>
+                  <button nbButton (click)="onSearchCustomer()">
+                    <nb-icon icon="search-outline"
+                             pack="eva">
+                    </nb-icon>
+                  </button>
+                </div>
+              </nb-form-field>
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label text-right">Statement Number</label>
+            <div class="col-sm-6 col-md-6">
+              <nb-form-field>
+                <input nbInput fullWidth type="text" placeholder="search statement Number"
+                       formControlName="statementNumber"
+                       [nbAutocomplete]="autoControlNumber" #searchStatementNum>
+                <nb-autocomplete #autoControlNumber>
+                  <nb-option *ngFor="let option of statementNumberList$" [value]="option.code">
+                    {{ option.name }}
+                  </nb-option>
+                </nb-autocomplete>
+                <button nbSuffix nbButton ghost (click)="onClearStatement()">
+                  <nb-icon icon="close-outline"
+                           pack="eva">
+                  </nb-icon>
+                </button>
+              </nb-form-field>
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="label col-sm-3 col-md-2 col-form-label"></label>
+            <div class="col-sm-6 col-md-3">
+              <button nbButton fullWidth status="primary"
+                      [disabled]="!form.valid"
+                      (click)="exportReport()"
+                      [nbSpinner]="isLoading" nbSpinnerStatus="primary">
+                <nb-icon icon="download-outline"></nb-icon>
+                Generate Report
+              </button>
+            </div>
+
+            <div class="col-sm-6 col-md-3">
+              <button nbButton fullWidth status="basic" (click)="clearData()">
+                <nb-icon icon="close-outline"></nb-icon>
+                Clear
+              </button>
+            </div>
+            <!--            <div class="col-sm-6 col-md-3">-->
+            <!--              <button nbButton fullWidth status="basic" (click)="getLogHistory()">-->
+            <!--                <nb-icon icon="list-outline"></nb-icon>-->
+            <!--                Log-->
+            <!--              </button>-->
+            <!--            </div>-->
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+
+    <nb-card>
+      <nb-card-header class="nb-card-font">
+        <div class="row align-items-center">
+          <div class="col-md-2 col-lg-4 col-sm-12">Log Statement Excel Report</div>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <ag-grid-angular class="ag-theme-alpine"
+                         domLayout="autoHeight"
+                         [columnDefs]="columnLogDefs"
+                         [defaultColDef]="defaultColDef"
+                         [rowData]="logData"
+                         [paginationPageSize]="paginationPageSize"
+                         [pagination]="true"
+                         [enableBrowserTooltips]="true"
+                         (gridReady)="onGridLogReady($event)"
+                         [context]="context"
+                         rowSelection="single"
+                         [animateRows]="true"
+                         [enableCellTextSelection]="true"
+                         [sortingOrder]="sortingOrder">
+        </ag-grid-angular>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

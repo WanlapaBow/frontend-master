@@ -1,0 +1,11 @@
+<button
+  class="btn"
+  nbButton
+  size="small"
+  [disabled]="params.data['jobInfoStatus'] !== 'Completed'"
+  status="primary"
+  (click)="onClick()"
+>
+  <nb-icon icon="file-outline"></nb-icon>
+  {{params.data['reportParameters']}}
+</button>
